@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.cloudapi.sdk.model.ApiResponse;
 import com.boot.security.server.constants.CmallConstants;
-import com.boot.security.server.utils.CmallOpenApiHelper_CmallOpenApi;
+import com.boot.security.server.utils.CmallOpenApiHelper;
 
 @RestController
 @RequestMapping("api/zx")
@@ -15,14 +15,15 @@ public class ZhongXinReqController {
 
     @GetMapping("/call")
     @ResponseBody
-    public String request(String url,String appId) throws IOException {
+    public String request(String url,String appId,String rev) throws IOException {
         
         url = "/"+url;
         System.out.println("路径========"+url);
-        System.out.println("appid========"+appId);
-        CmallOpenApiHelper_CmallOpenApi helper = CmallOpenApiHelper_CmallOpenApi.getInstance();
+        System.out.println("appId========"+appId);
+        System.out.println("rev========"+rev);
+        CmallOpenApiHelper helper = CmallOpenApiHelper.getInstance();
         helper.init();
-        ApiResponse response = helper.sendCmallOpenApisyncMode(url, CmallConstants.V,appId);
+        ApiResponse response = helper.sendCmallOpenApisyncMode(url, CmallConstants.V,appId,rev);
         return helper.getResultString(response);
     }
 
