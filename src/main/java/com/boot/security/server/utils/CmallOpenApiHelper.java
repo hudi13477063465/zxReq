@@ -1,7 +1,8 @@
 package com.boot.security.server.utils;
 
 import java.io.IOException;
-
+import java.util.Map;
+import java.util.Map.Entry;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.cloudapi.sdk.client.ApacheHttpClient;
@@ -46,6 +47,23 @@ public class CmallOpenApiHelper extends ApacheHttpClient {
         	rev = "TEST";
         }
         request.addParam("X-Ca-Stage", rev, ParamPosition.HEAD, true);
+        return sendSyncRequest(request);
+    }
+    
+    /**
+     * subUrl 路径 v 版本号 appId
+     */
+    public ApiResponse sendCmallOpenApisyncMode(String subUrl, String v, String appId,String rev,Map<String,String> params) {
+        ApiRequest request = new ApiRequest(HttpMethod.POST_FORM, subUrl);
+        request.addParam("appId", appId, ParamPosition.HEAD, true);
+        request.addParam("v", v, ParamPosition.HEAD, true);
+        if(StringUtils.isBlank(rev)){
+            rev = "TEST";
+        }
+        request.addParam("X-Ca-Stage", rev, ParamPosition.HEAD, true);
+        for(Entry<String,String> entry:params.entrySet()){
+            request.addParam(entry.getKey(), entry.getValue(), ParamPosition.BODY, true);
+        }
         return sendSyncRequest(request);
     }
     
